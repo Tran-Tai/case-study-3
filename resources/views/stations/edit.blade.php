@@ -7,6 +7,7 @@
     <form action="/stations/{{$station->id}}" class="was-validated" method="POST">
         @method('PUT')
         @csrf
+        <legend>Chỉnh sửa thông tin trạm</legend>
         <div class="form-group">
             <label for="name">Tên trạm</label>
             <input type="text" class="form-control" name="name" value="{{$station->name}}" required>

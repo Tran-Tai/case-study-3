@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Contracts\BusesRepository;
 use App\Repositories\Contracts\RoutesRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class BusesController extends Controller
 {
@@ -50,7 +51,9 @@ class BusesController extends Controller
             'last_worktime' => date("Y-m-d H:i:s"), 
             'last_station_id' => 0
         ];
-        $this->busesRepository->create($attributes);
+        $store_success = $this->busesRepository->create($attributes);
+        if ($store_success) Session::flash('success', 'Đã thêm thông tin xe thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
 
         return redirect('/buses/create');
     }
@@ -71,7 +74,11 @@ class BusesController extends Controller
             'route_id1' => $request->route_id1,
             'route_id2' => $request->route_id2
         ];
-        $this->busesRepository->update($id, $attributes);
+        
+        $edit_success = $this->busesRepository->update($id, $attributes);
+
+        if ($edit_success) Session::flash('success', 'Đã chỉnh sửa thông tin xe thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
 
         return redirect('/buses/'.$id);
     }

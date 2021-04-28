@@ -5,6 +5,7 @@
 @section('body')
     <div class="container col-6 my-1 p-1">
         <form>
+            <legend>Thông tin trạm</legend>
             <div class="form-group">
                 <label>ID</label>
                 <p class="form-control">{{$station->id}}</p>

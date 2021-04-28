@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\Contracts\StationsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class StationsController extends Controller
 {
@@ -38,7 +39,10 @@ class StationsController extends Controller
             'name' => $request->name,
             'routes_list' => ''
         ];
-        $this->stationsRepository->create($attributes);
+        $store_success = $this->stationsRepository->create($attributes);
+
+        if ($store_success) Session::flash('success', 'Đã thêm thông tin trạm thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
 
         return view('stations.create');
     }
@@ -54,7 +58,11 @@ class StationsController extends Controller
         $attributes = [
             'name' => $request->name
         ];
-        $this->stationsRepository->update($id, $attributes);
+        $edit_success = $this->stationsRepository->update($id, $attributes);
+
+        if ($edit_success) Session::flash('success', 'Đã chỉnh sửa thông tin trạm thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
+
 
         return redirect('/stations/'.$id);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\Contracts\StaffsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class StaffsController extends Controller
 {
@@ -45,7 +46,10 @@ class StaffsController extends Controller
             'last_worktime' => date("Y-m-d H:i:s"), 
             'last_station_id' => 0
         ];
-        $this->staffsRepository->create($attributes);
+        $store_success = $this->staffsRepository->create($attributes);
+
+        if ($store_success) Session::flash('success', 'Đã thêm thông tin nhân viên thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
 
         return view('staffs.create');
     }
@@ -65,7 +69,11 @@ class StaffsController extends Controller
             'address' => $request->address,
             'role_code' => $request->role
         ];
-        $this->staffsRepository->update($id, $attributes);
+        $edit_success = $this->staffsRepository->update($id, $attributes);
+
+        if ($edit_success) Session::flash('success', 'Đã chỉnh sửa thông tin nhân viên thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
+
 
         return redirect('/staffs/'.$id);
     }

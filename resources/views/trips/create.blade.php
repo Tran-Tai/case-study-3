@@ -45,7 +45,7 @@ Add Trips
             
         </div>
         <button type="submit" class="btn btn-primary">Thêm chuyến</button>
-        <a type="button" class="btn btn-primary" href="/routes">Quay lại danh sách</a>
+        <a type="button" class="btn btn-primary" href="/trips/route/{{$route->id}}">Đến danh sách chuyến</a>
     </form>
 </div>
 <script>

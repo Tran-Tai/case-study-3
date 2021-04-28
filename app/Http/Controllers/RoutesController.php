@@ -6,6 +6,7 @@ use App\Repositories\Contracts\RoutesRepository;
 use App\Repositories\Contracts\RouteStationRepository;
 use App\Repositories\Contracts\StationsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class RoutesController extends Controller
 {
@@ -60,7 +61,7 @@ class RoutesController extends Controller
             'time_interval' => $time_interval,
             'reverse_route_id' => $reverse_route_id
         ];
-        $route_id = $this->routesRepository->create($attributes);
+        $store_success = $route_id = $this->routesRepository->create($attributes);
         if ($reverse_route_id != 0) {
             $this->routesRepository->updateReverseRouteId($reverse_route_id, $route_id);
         }
@@ -81,6 +82,10 @@ class RoutesController extends Controller
 
             $this->stationsRepository->insertRoute($request->$station_id, $route_id, $request->number);
         }
+
+        if ($store_success) Session::flash('success', 'Đã thêm thông tin tuyến đường thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
+
         return redirect('/routes/create');
     }
 
@@ -93,9 +98,15 @@ class RoutesController extends Controller
     public function update($id, Request $request)
     {
         $attributes = [
-            'name' => $request->name
+            'number' => $request->number,
+            'name' => $request->name,
+            'direction' => $request->direction,
         ];
-        $this->routesRepository->update($id, $attributes);
+        $edit_success = $this->routesRepository->update($id, $attributes);
+
+        if ($edit_success) Session::flash('success', 'Đã chỉnh sửa thông tin tuyến đường thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
+
 
         return redirect('/routes/'.$id);
     }

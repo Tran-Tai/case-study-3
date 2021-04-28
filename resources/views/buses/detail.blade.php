@@ -5,7 +5,7 @@ bus Info
 @section('body')
 <div class="container col-6 my-1 p-1">
     <form>
-        <legend>Chỉnh sửa thông tin xe</legend>
+        <legend>Thông tin xe</legend>
         <div class="form-group">
             <label for="number">Biển số xe</label>
             <p class="form-control">{{$bus->number}}</p>

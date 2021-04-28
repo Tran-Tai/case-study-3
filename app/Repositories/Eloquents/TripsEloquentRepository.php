@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquents;
 
+use App\Models\Staff;
 use App\Repositories\Contracts\TripsRepository;
 use App\Models\Trips;
 
@@ -9,12 +10,23 @@ class TripsEloquentRepository implements TripsRepository
 {
     public function getAll($route_id)
     {
-
-    }
+        $trips = Trips::where('route_id', $route_id)
+                      ->leftJoin('buses', 'trips.bus_id', '=', 'buses.id')
+                      ->leftJoin('staffs as drivers', 'trips.driver_id', '=', 'drivers.id')
+                      ->leftJoin('staffs as ticket_collectors', 'trips.ticket_collector_id', '=', 'ticket_collectors.id')
+                      ->select('trips.*', 'buses.number as bus_number', 'drivers.name as driver_name', 'ticket_collectors.name as ticket_collector_name')
+                      ->get();
+        return $trips;
+    }   
 
     public function get($id)
     {
-        
+        return Trips::where('trips.id', $id)
+                    ->leftJoin('buses', 'trips.bus_id', '=', 'buses.id')
+                    ->leftJoin('staffs as drivers', 'trips.driver_id', '=', 'drivers.id')
+                    ->leftJoin('staffs as ticket_collectors', 'trips.ticket_collector_id', '=', 'ticket_collectors.id')
+                    ->select('trips.*', 'buses.number as bus_number', 'drivers.name as driver_name', 'ticket_collectors.name as ticket_collector_name')
+                    ->first();
     }
 
     public function getLastTrip($route_id, $date)

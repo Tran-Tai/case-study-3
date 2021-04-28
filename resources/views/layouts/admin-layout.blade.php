@@ -47,6 +47,15 @@
     <div class="text-center">
         <h1>@yield('header', '')</h1>
     </div>
+    @if(Session::has('success'))
+        <div class="container col-6 alert alert-success" role="alert">
+            {{Session::get('success')}}
+        </div>
+    @elseif(Session::has('fail'))
+        <div class="container col-6 alert alert-success" role="alert">
+            {{Session::get('fail')}}
+        </div>
+    @endif
     @yield('body')
 </body>
 </html>

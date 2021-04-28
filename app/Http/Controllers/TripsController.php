@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Repositories\Contracts\BusesRepository;
 use App\Repositories\Contracts\TripsRepository;
 use App\Repositories\Contracts\RoutesRepository;
+use App\Repositories\Contracts\RouteStationRepository;
 use App\Repositories\Contracts\StaffsRepository;
 use App\Repositories\Contracts\StationsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class TripsController extends Controller
 {
@@ -16,18 +18,21 @@ class TripsController extends Controller
     protected $staffsRepository;
     protected $stationsRepository;
     protected $busesRepository;
+    protected $routeStationRepository;
 
     public function __construct(TripsRepository $tripsRepository, 
                                 RoutesRepository $routesRepository,
                                 StaffsRepository $staffsRepository,
                                 StationsRepository $stationsRepository,
-                                BusesRepository $busesRepository)
+                                BusesRepository $busesRepository,
+                                RouteStationRepository $routeStationRepository)
     {
         $this->tripsRepository = $tripsRepository;
         $this->routesRepository = $routesRepository;
         $this->staffsRepository = $staffsRepository;
         $this->stationsRepository = $stationsRepository;
         $this->busesRepository = $busesRepository;
+        $this->routeStationRepository = $routeStationRepository;
     }
 
     public function create($route_id)
@@ -75,16 +80,19 @@ class TripsController extends Controller
             'arrive_at' => $date_text . " " . $start_time_text,
             'passenger' => 0
         ];
-        $this->tripsRepository->create($attributes);
+        $store_success = $this->tripsRepository->create($attributes);
 
-        if ($end_minute < 30) {
-            $end_minute = $end_minute + 30;
-            $end_hour = $end_hour - 1;
+        if ($store_success) Session::flash('success', 'Đã thêm thông tin chuyến thành công');
+        else Session::flash('fail', 'Đã có lỗi xảy ra');
+
+        if ($end_minute > 30) {
+            $end_minute = $end_minute - 30;
+            $end_hour = $end_hour + 1;
             if ($end_minute < 10) $end_minute = "0" . $end_minute;
             if ($end_hour < 10) $end_hour = "0" . $end_hour;
         }
         else {
-            $end_minute = $end_minute - 30;
+            $end_minute = $end_minute + 30;
             if ($end_minute < 10) $end_minute = "0" . $end_minute;
         }
 
@@ -124,5 +132,22 @@ class TripsController extends Controller
         }
         $buses = $this->busesRepository->getAvailableBuses($station_id, $timestamp);
         return view('trips.info', compact('drivers', 'ticket_collectors', 'buses'));
+    }
+
+    public function index($route_id)
+    {
+        $trips = $this->tripsRepository->getAll($route_id);
+        $route = $this->routesRepository->get($route_id);
+        $first_station = $this->stationsRepository->get($route->first_station_id);
+        $last_station = $this->stationsRepository->get($route->last_station_id);
+        return view('trips.list', compact('trips', 'route', 'first_station', 'last_station'));
+    }
+
+    public function show($id)
+    {
+        $trip = $this->tripsRepository->get($id);
+        $route = $this->routesRepository->get($trip->route_id);
+        $stations = $this->routeStationRepository->getByRouteId($route->id);
+        return view('trips.detail', compact('trip', 'route', 'stations'));
     }
 }
