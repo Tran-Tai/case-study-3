@@ -23,7 +23,7 @@ class CreateStaffsTable extends Migration
             $table->string('user_name');
             $table->string('password');
             $table->date('last_workday');
-            $table->timestamp('last_worktime');
+            $table->unsignedBigInteger('last_worktime');
             $table->unsignedBigInteger('last_station_id');
             $table->timestamps();
         });

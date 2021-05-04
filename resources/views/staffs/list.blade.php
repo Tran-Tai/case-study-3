@@ -33,7 +33,7 @@
                                 @break
                         @endswitch
                     </td>
-                    <td class="pl-3 align-middle">{{$staff->birthday}}</td>
+                    <td class="pl-3 align-middle">{{date('d/m/Y',strtotime($staff->birthday))}}</td>
                     <td class="pl-3 align-middle">{{$staff->address}}</td>
                     <td class="pl-3 align-middle">
                         @switch($staff->role_code)

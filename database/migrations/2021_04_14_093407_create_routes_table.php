@@ -22,8 +22,8 @@ class CreateRoutesTable extends Migration
             $table->integer('total_station');
             $table->unsignedBigInteger('first_station_id');
             $table->unsignedBigInteger('last_station_id');
-            $table->bigInteger('total_time');
-            $table->bigInteger('time_interval');
+            $table->unsignedBigInteger('total_time');
+            $table->unsignedBigInteger('time_interval');
             $table->timestamps();
             $table->foreign('first_station_id')->references('id')->on('stations');
             $table->foreign('last_station_id')->references('id')->on('stations');

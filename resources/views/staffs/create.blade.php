@@ -29,7 +29,7 @@ Add Staff
         <div class="form-group">
             <label for="role">Vị trí</label><br>
             <input type="radio" id="driver" name="role" value="1">
-            <label for="driver">Tài xế</label><br>
+            <label for="driver">Lái xe</label><br>
             <input type="radio" id="ticketCollector" name="role" value="2">
             <label for="ticketCollector">Soát vé</label><br>
             <!-- <input type="radio" id="operator" name="role" value="3">

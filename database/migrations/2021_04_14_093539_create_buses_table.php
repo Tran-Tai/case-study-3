@@ -21,7 +21,7 @@ class CreateBusesTable extends Migration
             $table->unsignedBigInteger('route_id1');
             $table->unsignedBigInteger('route_id2');
             $table->date('last_workday');
-            $table->timestamp('last_worktime');
+            $table->unsignedBigInteger('last_worktime');
             $table->unsignedBigInteger('last_station_id');
             $table->timestamps();
             $table->foreign('route_id1')->references('id')->on('routes');

@@ -39,8 +39,8 @@
                     <td class="text-center align-middle">{{$key + 1}}</td>
                     <td class="text-center align-middle">{{date('d/m/Y', strtotime($trip->date))}}</td>
                     <td class="text-center align-middle">{{$trip->number}}</td>
-                    <td class="text-center align-middle">{{date('h:i:s', strtotime($trip->start_time))}}</td>
-                    <td class="text-center align-middle">{{date('h:i:s', strtotime($trip->end_time))}}</td>
+                    <td class="text-center align-middle">{{date('H:i:s', strtotime($trip->start_time))}}</td>
+                    <td class="text-center align-middle">{{date('H:i:s', strtotime($trip->end_time))}}</td>
                     <td class="text-center align-middle">{{$trip->bus_number}}</td>
                     <td class="align-middle">{{$trip->driver_name}}</td>
                     <td class="align-middle">{{$trip->ticket_collector_name}}</td>

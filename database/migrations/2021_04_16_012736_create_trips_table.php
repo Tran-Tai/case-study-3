@@ -18,15 +18,15 @@ class CreateTripsTable extends Migration
             $table->unsignedBigInteger('route_id');
             $table->date('date');
             $table->integer('number');
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
+            $table->unsignedBigInteger('start_time');
+            $table->unsignedBigInteger('end_time');
             $table->unsignedBigInteger('bus_id');
             $table->unsignedBigInteger('driver_id');
             $table->unsignedBigInteger('ticket_collector_id');
             $table->unsignedBigInteger('operator_id');
-            $table->unsignedBigInteger('next_station_id');
+            $table->unsignedBigInteger('next_station_number');
             $table->integer('status');
-            $table->timestamp('arrive_at');
+            $table->unsignedBigInteger('arrive_at');
             $table->integer('passenger');
             $table->timestamps();
             $table->foreign('route_id')->references('id')->on('routes');
@@ -34,7 +34,6 @@ class CreateTripsTable extends Migration
             $table->foreign('driver_id')->references('id')->on('staffs');
             $table->foreign('ticket_collector_id')->references('id')->on('staffs');
             $table->foreign('operator_id')->references('id')->on('staffs');
-            $table->foreign('next_station_id')->references('id')->on('stations');
         });
 
     }
